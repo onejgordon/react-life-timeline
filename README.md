@@ -1,7 +1,6 @@
 # React Life Timeline
 
-__COMPONENT DESCRIPTION GOES HERE__
-
+A life by weeks timeline component for React. Inspired by busterbenson.com.
 
 ## Demo & Examples
 
@@ -30,21 +29,40 @@ npm install react-life-timeline --save
 
 ## Usage
 
-__EXPLAIN USAGE HERE__
+Drop the component in with a get_events method that calls a callback with an array of events from a local or API data source.
+
+Each event object should have:
+
+- date_start: Date object
+- date_end: Date object (optional)
+- title: Title of event
+- color: Hex color
 
 ```
 var ReactLifeTimeline = require('react-life-timeline');
 
-<ReactLifeTimeline>Example</ReactLifeTimeline>
+<ReactLifeTimeline get_events={this.fetch_events.bind(this)} birthday={new Date('1985-04-04')}></ReactLifeTimeline>
+```
+
+And an example get_events function:
+
+```
+
+fetch_events: function(cb) {
+	api.get('/api/your-resource', {id: 1}, (res) => {
+		cb(res.events);
+	});
+}
+
 ```
 
 ### Properties
 
-* __DOCUMENT PROPERTIES HERE__
-
-### Notes
-
-__ADDITIONAL USAGE NOTES__
+* get_events: `void function(callback)`
+* birthday (date object)
+* birthday_color (hex string)
+* subject_name (string, or null for 'I')
+* project_days (int, # of days to project into future)
 
 
 ## Development (`src`, `lib` and the build process)
@@ -53,9 +71,9 @@ __ADDITIONAL USAGE NOTES__
 
 To build, watch and serve the examples (which will also watch the component source), run `npm start`. If you just want to watch changes to `src` and rebuild `lib`, run `npm run watch` (this is useful if you are working with `npm link`).
 
-## License
+Thanks to JedWatson's incredibly easy to use: https://github.com/JedWatson/generator-react-component
 
-__PUT LICENSE HERE__
+## License
 
 Copyright (c) 2017 Jeremy Gordon.
 
