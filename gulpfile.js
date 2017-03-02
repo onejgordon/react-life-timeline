@@ -19,7 +19,11 @@ var taskConfig = {
 			'react',
 			'react-dom'
 		],
-		lib: 'lib'
+		lib: 'lib',
+		less: {
+			path: 'less',
+			entry: 'react-life-timeline.less'
+		}
 	},
 
 	example: {
