@@ -1316,8 +1316,8 @@ var ReactLifeTimeline = (function (_React$Component) {
 			var _events = events.filter(function (e) {
 				var estart = new Date(e.date_start);
 				var eend = new Date(e.date_end);
-				var start_in_week = estart >= week_start && estart <= week_end;
-				var end_in_week = eend >= week_start && eend <= week_end;
+				var start_in_week = estart >= week_start && estart < week_end;
+				var end_in_week = eend >= week_start && eend < week_end;
 				var event_spans_week = estart <= week_start && eend >= week_end;
 				var in_week = start_in_week || end_in_week || event_spans_week;
 				if (in_week) {
@@ -1341,7 +1341,6 @@ var ReactLifeTimeline = (function (_React$Component) {
 				if (bd_in_week) {
 					color = this.props.birthday_color;
 					var me = subject_name == null;
-
 					var title = undefined;
 					var subj = me ? 'I' : subject_name;
 					if (age == 0) {
