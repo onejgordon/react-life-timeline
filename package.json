@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "React Life Timeline",
   "main": "lib/ReactLifeTimeline.js",
+  "license": "MIT",
   "author": "Jeremy Gordon",
   "homepage": "https://github.com/onejgordon/react-life-timeline",
   "repository": {
