@@ -1,6 +1,6 @@
 # React Life Timeline
 
-A life by weeks timeline component for React. Inspired by busterbenson.com.
+A life by weeks timeline component for React. Inspired by [this post](http://waitbutwhy.com/2014/05/life-weeks.html) on Wait but Why, and busterbenson.com.
 
 ## Demo & Examples
 
