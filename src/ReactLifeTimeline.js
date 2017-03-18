@@ -18,8 +18,8 @@ export default class ReactLifeTimeline extends React.Component {
 		else this.props.get_events(this.got_events.bind(this));
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		if (this.props.events.length != this.state.events.length) this.got_events(this.props.events);
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.events.length != this.state.events.length) this.got_events(nextProps.events);
 	}
 
 	got_events(events) {
