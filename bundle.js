@@ -1266,6 +1266,17 @@ var ReactLifeTimeline = (function (_React$Component) {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			this.props.get_events(this.got_events.bind(this));
+			if (this.props.events) this.events_from_props();
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate(prevProps, prevState) {
+			if (this.props.events.length != this.state.events.length) this.events_from_props();
+		}
+	}, {
+		key: 'events_from_props',
+		value: function events_from_props() {
+			this.setState({ events: this.props.events });
 		}
 	}, {
 		key: 'got_events',
@@ -1445,6 +1456,7 @@ exports['default'] = ReactLifeTimeline;
 ReactLifeTimeline.defaultProps = {
 	birthday: null, // Date object
 	birthday_color: '#F89542',
+	events: [],
 	project_days: 200, // Days into future to project,
 	subject_name: null, // Person's name (otherwise 'I')
 	get_events: function get_events(cb) {
