@@ -58,7 +58,10 @@ fetch_events: function(cb) {
 
 ### Properties
 
+Either specify a get_events function, or pass in events as props.
+
 * get_events: `void function(callback)`
+* events: Optional list of event objects
 * birthday (date object)
 * birthday_color (hex string)
 * subject_name (string, or null for 'I')
