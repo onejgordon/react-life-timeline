@@ -15,6 +15,15 @@ export default class ReactLifeTimeline extends React.Component {
 
 	componentDidMount() {
 		this.props.get_events(this.got_events.bind(this));
+		if (this.props.events) this.events_from_props()
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.events.length != this.state.events.length) this.events_from_props();
+	}
+
+	events_from_props() {
+		this.setState({events: this.props.events});
 	}
 
 	got_events(events) {
@@ -159,6 +168,7 @@ export default class ReactLifeTimeline extends React.Component {
 ReactLifeTimeline.defaultProps = {
     birthday: null, // Date object
     birthday_color: '#F89542',
+    events: [],
     project_days: 200, // Days into future to project,
     subject_name: null, // Person's name (otherwise 'I')
     get_events: (cb) => {

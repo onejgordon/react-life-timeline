@@ -3,8 +3,16 @@ var ReactDOM = require('react-dom');
 var ReactLifeTimeline = require('react-life-timeline');
 
 class App extends React.Component {
-	generate_events(cb) {
-		let events = [
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			events: [],
+			lookup: {},
+			loaded: false,
+			today: new Date()
+		};
+		this.EVENTS = [
 			{date_start: new Date('1992-01-01'), date_end: new Date('2004-01-01'), title: 'Practices civil rights law and teaches constitutional law at the University of Chicago Law School.', color: '#FC004C'},
 			{date_start: new Date('1995-01-01'), title: 'Publishes his autobiography "Dreams from my Father"'},
 			{date_start: new Date('1997-01-01'), date_end: new Date('2005-01-01'), title: 'Illinois State Senator, representing the 13th District.', color: '#95F268'},
@@ -18,7 +26,10 @@ class App extends React.Component {
 			{date_start: new Date('2009-01-20'), date_end: new Date('2017-01-20'), title: 'POTUS'},
 			{date_start: new Date('2017-01-20'), title: 'Leaves the Oval Office after two terms as president.'},
 		];
-		cb(events);
+	}
+
+	generate_events(cb) {
+		cb(this.EVENTS);
 	}
 
 	render () {
@@ -34,6 +45,7 @@ class App extends React.Component {
 				<p>
 					<small>Source data: <a href="http://edition.cnn.com/2012/12/26/us/barack-obama---fast-facts/" target="_blank">CNN</a></small>
 				</p>
+
 			</div>
 		);
 	}
