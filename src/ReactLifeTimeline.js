@@ -14,16 +14,12 @@ export default class ReactLifeTimeline extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.get_events(this.got_events.bind(this));
-		if (this.props.events) this.events_from_props()
+		if (this.props.events.length > 0) this.got_events(this.props.events);
+		else this.props.get_events(this.got_events.bind(this));
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.events.length != this.state.events.length) this.events_from_props();
-	}
-
-	events_from_props() {
-		this.setState({events: this.props.events});
+		if (this.props.events.length != this.state.events.length) this.got_events(this.props.events);
 	}
 
 	got_events(events) {

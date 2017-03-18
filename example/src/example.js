@@ -10,7 +10,9 @@ class App extends React.Component {
 			events: [],
 			lookup: {},
 			loaded: false,
-			today: new Date()
+			today: new Date(),
+			events_added: 0,
+			timeout_id: null
 		};
 		this.EVENTS = [
 			{date_start: new Date('1992-01-01'), date_end: new Date('2004-01-01'), title: 'Practices civil rights law and teaches constitutional law at the University of Chicago Law School.', color: '#FC004C'},
@@ -32,6 +34,31 @@ class App extends React.Component {
 		cb(this.EVENTS);
 	}
 
+	componentDidMount() {
+		this.add_incremental_event();
+	}
+
+	add_incremental_event(force_index) {
+		let {events_added} = this.state;
+		let next_index = force_index == null ? events_added+1 : force_index;
+		if (next_index < this.EVENTS.length) {
+			this.setState({events_added: next_index}, () => {
+				let timeout_id = window.setTimeout(this.add_incremental_event.bind(this), 1000);
+				this.setState({timeout_id: timeout_id});
+			});
+		}
+	}
+
+	incremental_events() {
+		return this.EVENTS.slice(0, this.state.events_added);
+	}
+
+	restart_incremental() {
+		let {timeout_id} = this.state;
+		if (timeout_id != null) window.clearInterval(timeout_id);
+		this.add_incremental_event(0);
+	}
+
 	render () {
 		return (
 			<div>
@@ -41,6 +68,16 @@ class App extends React.Component {
 						subject_name="Barack"
 						birthday={new Date("1961-08-04")}
 						get_events={this.generate_events.bind(this)} />
+
+				<h2>Adding Incrementally via props</h2>
+
+				<ReactLifeTimeline
+						subject_name="Barack"
+						birthday={new Date("1961-08-04")}
+						events={this.incremental_events()} />
+				<p>
+					<a href="javascript:void(0)" onClick={this.restart_incremental.bind(this)}>Restart</a>
+				</p>
 
 				<p>
 					<small>Source data: <a href="http://edition.cnn.com/2012/12/26/us/barack-obama---fast-facts/" target="_blank">CNN</a></small>
