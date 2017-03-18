@@ -1265,18 +1265,12 @@ var ReactLifeTimeline = (function (_React$Component) {
 	_createClass(ReactLifeTimeline, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			this.props.get_events(this.got_events.bind(this));
-			if (this.props.events) this.events_from_props();
+			if (this.props.events.length > 0) this.got_events(this.props.events);else this.props.get_events(this.got_events.bind(this));
 		}
 	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate(prevProps, prevState) {
-			if (this.props.events.length != this.state.events.length) this.events_from_props();
-		}
-	}, {
-		key: 'events_from_props',
-		value: function events_from_props() {
-			this.setState({ events: this.props.events });
+			if (this.props.events.length != this.state.events.length) this.got_events(this.props.events);
 		}
 	}, {
 		key: 'got_events',
