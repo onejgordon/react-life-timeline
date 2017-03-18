@@ -1268,9 +1268,9 @@ var ReactLifeTimeline = (function (_React$Component) {
 			if (this.props.events.length > 0) this.got_events(this.props.events);else this.props.get_events(this.got_events.bind(this));
 		}
 	}, {
-		key: 'componentDidUpdate',
-		value: function componentDidUpdate(prevProps, prevState) {
-			if (this.props.events.length != this.state.events.length) this.got_events(this.props.events);
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			if (nextProps.events.length != this.state.events.length) this.got_events(nextProps.events);
 		}
 	}, {
 		key: 'got_events',
