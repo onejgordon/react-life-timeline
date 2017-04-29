@@ -1,5 +1,8 @@
 # React Life Timeline
 
+[![npm version](https://badge.fury.io/js/react-life-timeline.svg)](https://badge.fury.io/js/react-life-timeline)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://jeremy.mit-license.org)
+
 A life by weeks timeline component for React. Inspired by [this post](http://waitbutwhy.com/2014/05/life-weeks.html) on Wait but Why, and busterbenson.com.
 
 ## Demo & Examples

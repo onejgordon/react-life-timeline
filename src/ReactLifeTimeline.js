@@ -15,15 +15,17 @@ export default class ReactLifeTimeline extends React.Component {
 
 	componentDidMount() {
 		if (this.props.events.length > 0) this.got_events(this.props.events);
-		else this.props.get_events(this.got_events.bind(this));
+		else if (this.props.get_events != null) this.props.get_events(this.got_events.bind(this));
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.events.length != this.state.events.length) this.got_events(nextProps.events);
+		if (this.props.get_events == null && nextProps.events.length != this.state.events.length) this.got_events(nextProps.events);
 	}
 
 	got_events(events) {
-		this.setState({events: events, loaded: true}, this.generate_lookup.bind(this));
+		this.setState({events: events, loaded: true}, () => {
+			this.generate_lookup();
+		})
 	}
 
 	print_date(date) {
@@ -112,9 +114,9 @@ export default class ReactLifeTimeline extends React.Component {
 		let cursor = new Date(birthday.getTime());
 		let weeks = [];
 		while (cursor <= end) {
-			let birthday = new Date(cursor.getTime());
+			let d = new Date(cursor.getTime());
 			cursor.setDate(cursor.getDate() + 7);
-			fn(birthday, new Date(cursor.getTime()));
+			fn(d, new Date(cursor.getTime()));
 		}
 	}
 
@@ -167,9 +169,6 @@ ReactLifeTimeline.defaultProps = {
     events: [],
     project_days: 200, // Days into future to project,
     subject_name: null, // Person's name (otherwise 'I')
-    get_events: (cb) => {
-    	// Function to get events (e.g. via API resource)
-    	cb([]);
-    }
+    get_events: null // Function to get events (e.g. via API resource)
 };
 
