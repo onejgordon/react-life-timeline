@@ -36,10 +36,12 @@ Drop the component in with a get_events method that calls a callback with an arr
 
 Each event object should have:
 
+- title: Title of event
 - date_start: Date object
 - date_end: Date object (optional)
-- title: Title of event
-- color: Hex color
+- color: Hex color (optional)
+- ongoing: Boolean (If true, event will be rendered through today, default: false)
+
 
 ```
 var ReactLifeTimeline = require('react-life-timeline');

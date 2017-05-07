@@ -46,7 +46,7 @@ export default class ReactLifeTimeline extends React.Component {
 	}
 
 	single_event(e) {
-		return e.single || !e.date_end || e.date_start == e.date_end;
+		return (e.single || !e.date_end || e.date_start == e.date_end) && (!e.ongoing);
 	}
 
 	get_events_in_week(week_start, week_end) {
@@ -58,6 +58,7 @@ export default class ReactLifeTimeline extends React.Component {
 	    let _events = events.filter((e) => {
 	    	let estart = new Date(e.date_start);
 	    	let eend = new Date(e.date_end);
+	    	if (e.ongoing) eend = new Date();
 	    	let start_in_week = estart >= week_start && estart < week_end;
 	    	let end_in_week = eend >= week_start && eend < week_end;
 	    	let event_spans_week = estart <= week_start && eend >= week_end;

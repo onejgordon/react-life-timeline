@@ -28,6 +28,11 @@ class App extends React.Component {
 			{date_start: new Date('2009-01-20'), date_end: new Date('2017-01-20'), title: 'POTUS'},
 			{date_start: new Date('2017-01-20'), title: 'Leaves the Oval Office after two terms as president.'},
 		];
+
+		this.EVENTS_WITH_ONGOING = [
+			{date_start: new Date('2017-02-01'), date_end: new Date('2017-02-20'), title: 'Sample prior event', color: '#FC004C'},
+			{date_start: new Date('2017-04-01'), title: 'Sample ongoing event', color: '#2276FF', ongoing: true},
+		];
 	}
 
 	generate_events(cb) {
@@ -82,6 +87,13 @@ class App extends React.Component {
 				<p>
 					<small>Source data: <a href="http://edition.cnn.com/2012/12/26/us/barack-obama---fast-facts/" target="_blank">CNN</a></small>
 				</p>
+
+				<h2>With Ongoing Event</h2>
+
+				<ReactLifeTimeline
+						subject_name="John"
+						birthday={new Date("2017-01-01")}
+						events={this.EVENTS_WITH_ONGOING} />
 
 			</div>
 		);
