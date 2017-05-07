@@ -2410,7 +2410,7 @@ var ReactLifeTimeline = (function (_React$Component) {
 	}, {
 		key: 'single_event',
 		value: function single_event(e) {
-			return e.single || !e.date_end || e.date_start == e.date_end;
+			return (e.single || !e.date_end || e.date_start == e.date_end) && !e.ongoing;
 		}
 	}, {
 		key: 'get_events_in_week',
@@ -2430,6 +2430,7 @@ var ReactLifeTimeline = (function (_React$Component) {
 			var _events = events.filter(function (e) {
 				var estart = new Date(e.date_start);
 				var eend = new Date(e.date_end);
+				if (e.ongoing) eend = new Date();
 				var start_in_week = estart >= week_start && estart < week_end;
 				var end_in_week = eend >= week_start && eend < week_end;
 				var event_spans_week = estart <= week_start && eend >= week_end;
