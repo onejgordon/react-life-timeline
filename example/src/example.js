@@ -33,6 +33,15 @@ class App extends React.Component {
 			{date_start: new Date('2017-02-01'), date_end: new Date('2017-02-20'), title: 'Sample prior event', color: '#FC004C'},
 			{date_start: new Date('2017-04-01'), title: 'Sample ongoing event', color: '#2276FF', ongoing: true},
 		];
+
+		let today = new Date();
+		let future_start = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
+		let future_end = new Date(future_start.getTime());
+		future_end.setDate(future_end.getDate() + 7);
+		this.EVENTS_WITH_FUTURE = [
+			{date_start: new Date('2017-02-01'), date_end: new Date('2017-02-20'), title: 'Sample prior event', color: '#FC004C'},
+			{date_start: future_start, date_end: future_end, title: 'Sample future event', color: '#FD691C'},
+		];
 	}
 
 	generate_events(cb) {
@@ -40,7 +49,6 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		this.add_incremental_event();
 	}
 
 	add_incremental_event(force_index) {
@@ -81,7 +89,7 @@ class App extends React.Component {
 						birthday={new Date("1961-08-04")}
 						events={this.incremental_events()} />
 				<p>
-					<a href="javascript:void(0)" onClick={this.restart_incremental.bind(this)}>Restart</a>
+					<a href="javascript:void(0)" onClick={this.restart_incremental.bind(this)}>Play Incremental / Restart</a>
 				</p>
 
 				<p>
@@ -94,6 +102,13 @@ class App extends React.Component {
 						subject_name="John"
 						birthday={new Date("2017-01-01")}
 						events={this.EVENTS_WITH_ONGOING} />
+
+				<h2>With Future Event</h2>
+
+				<ReactLifeTimeline
+						subject_name="John"
+						birthday={new Date("2017-01-01")}
+						events={this.EVENTS_WITH_FUTURE} />
 
 			</div>
 		);

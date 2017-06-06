@@ -9,7 +9,8 @@ export default class ReactLifeTimeline extends React.Component {
 			events: [],
 			lookup: {},
 			loaded: false,
-			today: new Date()
+			today: new Date(),
+			last_event_date: new Date()
 		};
 	}
 
@@ -22,10 +23,29 @@ export default class ReactLifeTimeline extends React.Component {
 		if (this.props.get_events == null && nextProps.events.length != this.state.events.length) this.got_events(nextProps.events);
 	}
 
+	event_end_date(e) {
+		if (e.date_end) return new Date(e.date_end)
+		else return new Date(e.date_start);
+	}
+
 	got_events(events) {
-		this.setState({events: events, loaded: true}, () => {
+		let last_event_date = new Date();
+		if (events.length > 0) {
+			let latest_event = events.sort((e1, e2) => {
+		    	let e1ref = this.event_end_date(e1);
+		    	let e2ref = this.event_end_date(e2);
+		    	if (e2ref > e1ref) return 1;
+		    	else if (e2ref < e1ref) return -1;
+		    	else return 0;
+			})[0];
+			let latest_end = this.event_end_date(latest_event);
+			if (latest_end > last_event_date) {
+				last_event_date = latest_end;
+			}
+		}
+		this.setState({events: events, loaded: true, last_event_date: last_event_date}, () => {
 			this.generate_lookup();
-		})
+		});
 	}
 
 	print_date(date) {
@@ -42,7 +62,9 @@ export default class ReactLifeTimeline extends React.Component {
 	    this.all_weeks((week_start, week_end) => {
 	    	lookup[this.print_date(week_start)] = this.get_events_in_week(week_start, week_end);
 	    });
-	    this.setState({lookup});
+	    this.setState({lookup}, () => {
+	    	ReactTooltip.rebuild();
+	    });
 	}
 
 	single_event(e) {
@@ -107,11 +129,17 @@ export default class ReactLifeTimeline extends React.Component {
 	    };
 	}
 
+	get_end() {
+		let {last_event_date} = this.state;
+		let projected_end = new Date(last_event_date.getTime());
+		projected_end.setDate(projected_end.getDate() + this.props.project_days);
+		return projected_end;
+	}
+
 	all_weeks(fn) {
 		let {birthday} = this.props;
 		let {today} = this.state;
-		let end = new Date(today.getTime());
-		end.setDate(end.getDate() + this.props.project_days);
+		let end = this.get_end();
 		let cursor = new Date(birthday.getTime());
 		let weeks = [];
 		while (cursor <= end) {
