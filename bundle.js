@@ -2363,7 +2363,8 @@ var ReactLifeTimeline = (function (_React$Component) {
 			events: [],
 			lookup: {},
 			loaded: false,
-			today: new Date()
+			today: new Date(),
+			last_event_date: new Date()
 		};
 	}
 
@@ -2378,11 +2379,28 @@ var ReactLifeTimeline = (function (_React$Component) {
 			if (this.props.get_events == null && nextProps.events.length != this.state.events.length) this.got_events(nextProps.events);
 		}
 	}, {
+		key: 'event_end_date',
+		value: function event_end_date(e) {
+			if (e.date_end) return new Date(e.date_end);else return new Date(e.date_start);
+		}
+	}, {
 		key: 'got_events',
 		value: function got_events(events) {
 			var _this = this;
 
-			this.setState({ events: events, loaded: true }, function () {
+			var last_event_date = new Date();
+			if (events.length > 0) {
+				var latest_event = events.sort(function (e1, e2) {
+					var e1ref = _this.event_end_date(e1);
+					var e2ref = _this.event_end_date(e2);
+					if (e2ref > e1ref) return 1;else if (e2ref < e1ref) return -1;else return 0;
+				})[0];
+				var latest_end = this.event_end_date(latest_event);
+				if (latest_end > last_event_date) {
+					last_event_date = latest_end;
+				}
+			}
+			this.setState({ events: events, loaded: true, last_event_date: last_event_date }, function () {
 				_this.generate_lookup();
 			});
 		}
@@ -2405,7 +2423,9 @@ var ReactLifeTimeline = (function (_React$Component) {
 			this.all_weeks(function (week_start, week_end) {
 				lookup[_this2.print_date(week_start)] = _this2.get_events_in_week(week_start, week_end);
 			});
-			this.setState({ lookup: lookup });
+			this.setState({ lookup: lookup }, function () {
+				ReactTooltip.rebuild();
+			});
 		}
 	}, {
 		key: 'single_event',
@@ -2479,13 +2499,21 @@ var ReactLifeTimeline = (function (_React$Component) {
 			};
 		}
 	}, {
+		key: 'get_end',
+		value: function get_end() {
+			var last_event_date = this.state.last_event_date;
+
+			var projected_end = new Date(last_event_date.getTime());
+			projected_end.setDate(projected_end.getDate() + this.props.project_days);
+			return projected_end;
+		}
+	}, {
 		key: 'all_weeks',
 		value: function all_weeks(fn) {
 			var birthday = this.props.birthday;
 			var today = this.state.today;
 
-			var end = new Date(today.getTime());
-			end.setDate(end.getDate() + this.props.project_days);
+			var end = this.get_end();
 			var cursor = new Date(birthday.getTime());
 			var weeks = [];
 			while (cursor <= end) {
